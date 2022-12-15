@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
@@ -149,15 +148,6 @@ public class PlayQueueTest {
             assertNull(queue.getItem(-1));
             assertNull(queue.getItem(5));
         }
-
-        @Test
-        public void itemsAreNotCloned() {
-            final PlayQueueItem item = makeItemWithUrl("A url");
-            final PlayQueue playQueue = makePlayQueue(0, List.of(item));
-
-            // make sure that items are not cloned when added to the queue
-            assertSame(playQueue.getItem(), item);
-        }
     }
 
     public static class EqualsTests {
@@ -169,14 +159,6 @@ public class PlayQueueTest {
             final List<PlayQueueItem> streams = Collections.nCopies(5, item1);
             final PlayQueue queue1 = makePlayQueue(0, streams);
             final PlayQueue queue2 = makePlayQueue(0, streams);
-            assertEquals(queue1, queue2);
-        }
-
-        @Test
-        public void sameStreamsDifferentIndex() {
-            final List<PlayQueueItem> streams = Collections.nCopies(5, item1);
-            final PlayQueue queue1 = makePlayQueue(1, streams);
-            final PlayQueue queue2 = makePlayQueue(4, streams);
             assertEquals(queue1, queue2);
         }
 
