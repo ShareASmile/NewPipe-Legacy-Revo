@@ -17,7 +17,7 @@ import java.util.Date
             parentColumns = [SubscriptionEntity.SUBSCRIPTION_UID],
             childColumns = [SUBSCRIPTION_ID],
             onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE, deferred = true
-		)
+        )
     ]
 )
 data class FeedLastUpdatedEntity(

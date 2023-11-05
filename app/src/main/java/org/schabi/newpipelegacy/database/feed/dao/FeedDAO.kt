@@ -19,7 +19,7 @@ abstract class FeedDAO {
     abstract fun deleteAll(): Int
 
     @Query(
-	    """
+        """
         SELECT s.* FROM streams s
 
         INNER JOIN feed f
@@ -29,11 +29,11 @@ abstract class FeedDAO {
 
         LIMIT 500
         """
-	)
+    )
     abstract fun getAllStreams(): Flowable<List<StreamEntity>>
 
     @Query(
-	    """
+        """
         SELECT s.* FROM streams s
 
         INNER JOIN feed f
@@ -50,11 +50,11 @@ abstract class FeedDAO {
         ORDER BY s.upload_date IS NULL DESC, s.upload_date DESC, s.uploader ASC
         LIMIT 500
         """
-	)
+    )
     abstract fun getAllStreamsFromGroup(groupId: Long): Flowable<List<StreamEntity>>
 
     @Query(
-	    """
+        """
         DELETE FROM feed WHERE
 
         feed.stream_id IN (
@@ -66,11 +66,11 @@ abstract class FeedDAO {
             WHERE s.upload_date < :date
         )
         """
-	)
+    )
     abstract fun unlinkStreamsOlderThan(date: Date)
 
     @Query(
-	    """
+        """
         DELETE FROM feed
         
         WHERE feed.subscription_id = :subscriptionId
@@ -84,7 +84,7 @@ abstract class FeedDAO {
             WHERE s.stream_type = "LIVE_STREAM" OR s.stream_type = "AUDIO_LIVE_STREAM"
         )
         """
-	)
+    )
     abstract fun unlinkOldLivestreams(subscriptionId: Long)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -109,13 +109,13 @@ abstract class FeedDAO {
     }
 
     @Query(
-	    """
+        """
         SELECT MIN(lu.last_updated) FROM feed_last_updated lu
 
         INNER JOIN feed_group_subscription_join fgs
         ON fgs.subscription_id = lu.subscription_id AND fgs.group_id = :groupId
         """
-	)
+    )
     abstract fun oldestSubscriptionUpdate(groupId: Long): Flowable<List<Date>>
 
     @Query("SELECT MIN(last_updated) FROM feed_last_updated")
@@ -125,7 +125,7 @@ abstract class FeedDAO {
     abstract fun notLoadedCount(): Flowable<Long>
 
     @Query(
-	    """
+        """
         SELECT COUNT(*) FROM subscriptions s
         
         INNER JOIN feed_group_subscription_join fgs
@@ -136,11 +136,11 @@ abstract class FeedDAO {
 
         WHERE lu.last_updated IS NULL
         """
-	)
+    )
     abstract fun notLoadedCountForGroup(groupId: Long): Flowable<Long>
 
     @Query(
-	    """
+        """
         SELECT s.* FROM subscriptions s
 
         LEFT JOIN feed_last_updated lu
@@ -148,11 +148,11 @@ abstract class FeedDAO {
 
         WHERE lu.last_updated IS NULL OR lu.last_updated < :outdatedThreshold
         """
-	)
+    )
     abstract fun getAllOutdated(outdatedThreshold: Date): Flowable<List<SubscriptionEntity>>
 
     @Query(
-	    """
+        """
         SELECT s.* FROM subscriptions s
 
         INNER JOIN feed_group_subscription_join fgs
@@ -163,6 +163,6 @@ abstract class FeedDAO {
 
         WHERE lu.last_updated IS NULL OR lu.last_updated < :outdatedThreshold
         """
-	)
+    )
     abstract fun getAllOutdatedForGroup(groupId: Long, outdatedThreshold: Date): Flowable<List<SubscriptionEntity>>
 }

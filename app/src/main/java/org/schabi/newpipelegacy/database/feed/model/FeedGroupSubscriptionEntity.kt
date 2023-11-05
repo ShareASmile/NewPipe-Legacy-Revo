@@ -20,14 +20,14 @@ import org.schabi.newpipelegacy.database.subscription.SubscriptionEntity
             parentColumns = [FeedGroupEntity.ID],
             childColumns = [GROUP_ID],
             onDelete = CASCADE, onUpdate = CASCADE, deferred = true
-		),
+        ),
 
         ForeignKey(
             entity = SubscriptionEntity::class,
             parentColumns = [SubscriptionEntity.SUBSCRIPTION_UID],
             childColumns = [SUBSCRIPTION_ID],
             onDelete = CASCADE, onUpdate = CASCADE, deferred = true
-		)
+        )
     ]
 )
 data class FeedGroupSubscriptionEntity(

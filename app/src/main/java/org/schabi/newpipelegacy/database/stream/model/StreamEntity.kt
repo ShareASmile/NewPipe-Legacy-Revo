@@ -96,9 +96,10 @@ data class StreamEntity(
         item.textualUploadDate = textualUploadDate
         item.uploadDate = uploadDate?.let {
             DateWrapper(
-			    Calendar.getInstance().apply { time = it },
-				isUploadDateApproximation
-                    ?: false)
+                Calendar.getInstance().apply { time = it },
+                isUploadDateApproximation
+                    ?: false
+            )
         }
 
         return item

@@ -5,8 +5,8 @@ import androidx.room.Embedded
 import org.schabi.newpipe.extractor.stream.StreamInfoItem
 import org.schabi.newpipelegacy.database.LocalItem
 import org.schabi.newpipelegacy.database.playlist.model.PlaylistStreamEntity
-import org.schabi.newpipelegacy.database.stream.model.StreamStateEntity
 import org.schabi.newpipelegacy.database.stream.model.StreamEntity
+import org.schabi.newpipelegacy.database.stream.model.StreamStateEntity
 import kotlin.jvm.Throws
 
 data class PlaylistStreamEntry(
