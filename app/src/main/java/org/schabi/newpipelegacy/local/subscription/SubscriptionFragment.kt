@@ -209,18 +209,18 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
                     Toast.makeText(activity, R.string.invalid_directory, Toast.LENGTH_SHORT).show()
                 } else {
                     activity.startService(
-					    Intent(activity, SubscriptionsExportService::class.java)
+                        Intent(activity, SubscriptionsExportService::class.java)
                             .putExtra(KEY_FILE_PATH, exportFile.absolutePath)
-					)
+                    )
                 }
             } else if (requestCode == REQUEST_IMPORT_CODE) {
                 val path = Utils.getFileForUri(data.data!!).absolutePath
                 ImportConfirmationDialog.show(
-				    this,
-				    Intent(activity, SubscriptionsImportService::class.java)
+                    this,
+                    Intent(activity, SubscriptionsImportService::class.java)
                         .putExtra(KEY_MODE, PREVIOUS_EXPORT_MODE)
                         .putExtra(KEY_VALUE, path)
-				)
+                )
             }
         }
     }
@@ -269,7 +269,7 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
             { onImportFromServiceSelected(it) },
             { onExportSelected() },
             importExportItemExpandedState ?: false
-		)
+        )
         groupAdapter.add(Section(importExportItem, listOf(subscriptionsSection)))
     }
 
@@ -315,10 +315,10 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
 
     private fun deleteChannel(selectedItem: ChannelInfoItem) {
         disposables.add(
-		    subscriptionManager.deleteSubscription(selectedItem.serviceId, selectedItem.url).subscribe {
+        subscriptionManager.deleteSubscription(selectedItem.serviceId, selectedItem.url).subscribe {
                 Toast.makeText(requireContext(), getString(R.string.channel_unsubscribed), Toast.LENGTH_SHORT).show()
             }
-	    )
+        )
     }
 
     override fun doInitialLoadLogic() = Unit
@@ -341,9 +341,9 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
 
     private val listenerChannelItem = object : OnClickGesture<ChannelInfoItem>() {
         override fun selected(selectedItem: ChannelInfoItem) = NavigationHelper.openChannelFragment(
-		    fm,
+            fm,
             selectedItem.serviceId, selectedItem.url, selectedItem.name
-		)
+        )
 
         override fun held(selectedItem: ChannelInfoItem) = showLongTapDialog(selectedItem)
     }
@@ -437,9 +437,9 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
                 val configuration = resources.configuration
 
                 (
-				    configuration.orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                    configuration.orientation == Configuration.ORIENTATION_LANDSCAPE &&
                         configuration.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE)
-					)
+                    )
             }
             getString(R.string.list_view_mode_grid_key) -> true
             else -> false

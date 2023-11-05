@@ -262,9 +262,9 @@ class FeedFragment : BaseListFragment<FeedState, Unit>() {
 
         if (loadedState.itemsErrors.isNotEmpty()) {
             showSnackBarError(
-			    loadedState.itemsErrors, UserAction.REQUESTED_FEED,
+                loadedState.itemsErrors, UserAction.REQUESTED_FEED,
                 "none", "Loading feed", R.string.general_error
-			)
+            )
         }
 
         if (loadedState.items.isEmpty()) {
@@ -308,10 +308,10 @@ class FeedFragment : BaseListFragment<FeedState, Unit>() {
 
     private fun triggerUpdate() {
         getActivity()?.startService(
-		    Intent(requireContext(), FeedLoadService::class.java).apply {
+            Intent(requireContext(), FeedLoadService::class.java).apply {
                 putExtra(FeedLoadService.EXTRA_GROUP_ID, groupId)
             }
-	    )
+        )
         listState = null
     }
 

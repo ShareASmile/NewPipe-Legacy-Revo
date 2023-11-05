@@ -42,13 +42,13 @@ import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
+import org.schabi.newpipe.extractor.ListInfo
+import org.schabi.newpipe.extractor.exceptions.ReCaptchaException
+import org.schabi.newpipe.extractor.stream.StreamInfoItem
 import org.schabi.newpipelegacy.App
 import org.schabi.newpipelegacy.MainActivity.DEBUG
 import org.schabi.newpipelegacy.R
 import org.schabi.newpipelegacy.database.feed.model.FeedGroupEntity
-import org.schabi.newpipe.extractor.ListInfo
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException
-import org.schabi.newpipe.extractor.stream.StreamInfoItem
 import org.schabi.newpipelegacy.local.feed.FeedDatabaseManager
 import org.schabi.newpipelegacy.local.feed.service.FeedEventManager.Event.ErrorResultEvent
 import org.schabi.newpipelegacy.local.feed.service.FeedEventManager.Event.IdleEvent
@@ -110,10 +110,10 @@ class FeedLoadService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (DEBUG) {
             Log.d(
-			    TAG,
-				"onStartCommand() called with: intent = [" + intent + "]," +
+                TAG,
+                "onStartCommand() called with: intent = [" + intent + "]," +
                     " flags = [" + flags + "], startId = [" + startId + "]"
-			)
+            )
         }
 
         if (intent == null || loadingSubscription != null) {
@@ -219,7 +219,7 @@ class FeedLoadService : Service() {
                         ExtractorHelper
                             .getChannelInfo(subscriptionEntity.serviceId, subscriptionEntity.url, true)
                             .blockingGet()
-                } as ListInfo<StreamInfoItem>
+                    } as ListInfo<StreamInfoItem>
 
                     return@map Notification.createOnNext(Pair(subscriptionEntity.uid, listInfo))
                 } catch (e: Throwable) {
@@ -280,7 +280,7 @@ class FeedLoadService : Service() {
                 postEvent(ProgressEvent(R.string.feed_processing_message))
 
                 disposables.add(
-				    Single
+                    Single
                         .fromCallable {
                             feedResultsHolder.ready()
 
@@ -300,7 +300,7 @@ class FeedLoadService : Service() {
                             }
                             stopService()
                         }
-				)
+                    )
             }
         }
 
@@ -372,9 +372,9 @@ class FeedLoadService : Service() {
 
     private fun createNotification(): NotificationCompat.Builder {
         val cancelActionIntent = PendingIntent.getBroadcast(
-		    this,
+            this,
             NOTIFICATION_ID, Intent(ACTION_CANCEL), 0
-		)
+        )
 
         return NotificationCompat.Builder(this, getString(R.string.notification_channel_id))
             .setOngoing(true)
@@ -394,11 +394,11 @@ class FeedLoadService : Service() {
         }
 
         disposables.add(
-		    notificationUpdater
+            notificationUpdater
                 .publish(throttleAfterFirstEmission)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateNotificationProgress)
-		)
+        )
     }
 
     private fun updateNotificationProgress(updateDescription: String?) {

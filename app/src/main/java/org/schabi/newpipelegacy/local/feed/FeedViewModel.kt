@@ -55,13 +55,13 @@ class FeedViewModel(applicationContext: Context, val groupId: Long = FeedGroupEn
                 oldestUpdate?.let { Calendar.getInstance().apply { time = it } }
 
             mutableStateLiveData.postValue(
-			    when (event) {
+                when (event) {
                     is IdleEvent -> FeedState.LoadedState(listFromDB, oldestUpdateCalendar, notLoadedCount)
                     is ProgressEvent -> FeedState.ProgressState(event.currentProgress, event.maxProgress, event.progressMessage)
                     is SuccessResultEvent -> FeedState.LoadedState(listFromDB, oldestUpdateCalendar, notLoadedCount, event.itemsErrors)
                     is ErrorResultEvent -> FeedState.ErrorState(event.error)
                 }
-			)
+            )
 
             if (event is ErrorResultEvent || event is SuccessResultEvent) {
                 FeedEventManager.reset()
