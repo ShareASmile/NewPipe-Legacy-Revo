@@ -300,7 +300,7 @@ class FeedLoadService : Service() {
                             }
                             stopService()
                         }
-                    )
+                )
             }
         }
 

@@ -52,14 +52,14 @@ class FeedGroupReorderDialog : DialogFragment() {
         viewModel = ViewModelProviders.of(this).get(FeedGroupReorderDialogViewModel::class.java)
         viewModel.groupsLiveData.observe(viewLifecycleOwner, Observer(::handleGroups))
         viewModel.dialogEventLiveData.observe(
-		    viewLifecycleOwner,
-			Observer {
+            viewLifecycleOwner,
+            Observer {
                 when (it) {
                     ProcessingEvent -> disableInput()
                     SuccessEvent -> dismiss()
                 }
             }
-		)
+        )
 
         feed_groups_list.layoutManager = LinearLayoutManager(requireContext())
         feed_groups_list.adapter = groupAdapter

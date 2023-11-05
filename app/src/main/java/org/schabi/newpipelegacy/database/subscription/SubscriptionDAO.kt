@@ -21,7 +21,7 @@ abstract class SubscriptionDAO : BasicDAO<SubscriptionEntity> {
     abstract override fun getAll(): Flowable<List<SubscriptionEntity>>
 
     @Query(
-    """
+        """
         SELECT * FROM subscriptions
 
         WHERE name LIKE '%' || :filter || '%'
@@ -32,7 +32,7 @@ abstract class SubscriptionDAO : BasicDAO<SubscriptionEntity> {
     abstract fun getSubscriptionsFiltered(filter: String): Flowable<List<SubscriptionEntity>>
 
     @Query(
-    """
+        """
         SELECT * FROM subscriptions s
 
         LEFT JOIN feed_group_subscription_join fgs
@@ -48,7 +48,7 @@ abstract class SubscriptionDAO : BasicDAO<SubscriptionEntity> {
     ): Flowable<List<SubscriptionEntity>>
 
     @Query(
-    """
+        """
         SELECT * FROM subscriptions s
 
         LEFT JOIN feed_group_subscription_join fgs

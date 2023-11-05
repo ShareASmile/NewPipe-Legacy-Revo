@@ -315,7 +315,7 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
 
     private fun deleteChannel(selectedItem: ChannelInfoItem) {
         disposables.add(
-        subscriptionManager.deleteSubscription(selectedItem.serviceId, selectedItem.url).subscribe {
+            subscriptionManager.deleteSubscription(selectedItem.serviceId, selectedItem.url).subscribe {
                 Toast.makeText(requireContext(), getString(R.string.channel_unsubscribed), Toast.LENGTH_SHORT).show()
             }
         )
