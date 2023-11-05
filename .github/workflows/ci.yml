@@ -23,6 +23,7 @@ on:
     branches:
       - dev
       - develop
+      - fix-lint
       - main
       - master
       - legacy-revo
