@@ -37,9 +37,9 @@ class ChannelItem(
         if (itemVersion == ItemVersion.NORMAL) viewHolder.itemChannelDescriptionView.text = infoItem.description
 
         ImageLoader.getInstance().displayImage(
-		    infoItem.thumbnailUrl, viewHolder.itemThumbnailView,
+            infoItem.thumbnailUrl, viewHolder.itemThumbnailView,
             ImageDisplayConstants.DISPLAY_THUMBNAIL_OPTIONS
-		)
+        )
 
         gesturesListener?.run {
             viewHolder.containerView.setOnClickListener { selected(infoItem) }

@@ -10,9 +10,11 @@ class ExceptionUtils {
          */
         @JvmStatic
         fun isInterruptedCaused(throwable: Throwable): Boolean {
-            return hasExactCause(throwable,
-                    InterruptedIOException::class.java,
-                    InterruptedException::class.java)
+            return hasExactCause(
+                throwable,
+                InterruptedIOException::class.java,
+                InterruptedException::class.java
+            )
         }
 
         /**
@@ -20,10 +22,11 @@ class ExceptionUtils {
          */
         @JvmStatic
         fun isNetworkRelated(throwable: Throwable): Boolean {
-            return hasAssignableCause(throwable,
-                    IOException::class.java)
+            return hasAssignableCause(
+                throwable,
+                IOException::class.java
+            )
         }
-
         /**
          * Calls [hasCause] with the `checkSubtypes` parameter set to false.
          */
