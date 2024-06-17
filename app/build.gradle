@@ -3,7 +3,6 @@ plugins {
     id "kotlin-android"
     id "kotlin-kapt"
     id "kotlin-parcelize"
-    id "checkstyle"
     id "org.sonarqube" version "3.3"
 }
 
@@ -41,10 +40,10 @@ android {
             if (normalizedWorkingBranch.isEmpty() || workingBranch == "master" || workingBranch == "dev") {
                 // default values when branch name could not be determined or is master or dev
                 applicationIdSuffix ".debug"
-                resValue "string", "app_name", "NewPipe Debug"
+                resValue "string", "app_name", "NewPipe Legacy Debug"
             } else {
                 applicationIdSuffix ".debug." + normalizedWorkingBranch
-                resValue "string", "app_name", "NewPipe " + workingBranch
+                resValue "string", "app_name", "NewPipe Legacy " + workingBranch
                 archivesBaseName = 'NewPipe_' + normalizedWorkingBranch
             }
         }
@@ -59,7 +58,7 @@ android {
                 archivesBaseName = 'NewPipe_' + System.getProperty('packageSuffix')
             }
             minifyEnabled true
-            shrinkResources false // disabled to fix F-Droid's reproducible build
+            shrinkResources true // could be disabled to fix F-Droid's reproducible build
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             archivesBaseName = 'app'
             applicationIdSuffix ".Flora"
@@ -90,6 +89,11 @@ android {
         jvmTarget = JavaVersion.VERSION_11
     }
 
+    // Required and used only by groupie
+    androidExtensions {
+        experimental = true
+    }
+
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
@@ -100,16 +104,14 @@ android {
 }
 
 ext {
-    checkstyleVersion = '10.3.1'
-
     androidxLifecycleVersion = '2.3.1'
-    androidxRoomVersion = '2.4.2'
+    androidxRoomVersion = '2.3.0'
     androidxWorkVersion = '2.7.1'
 
     icepickVersion = '3.2.0'
-    exoPlayerVersion = '2.18.0'
+    exoPlayerVersion = '2.18.1'
     googleAutoServiceVersion = '1.0.1'
-    groupieVersion = '2.10.1'
+    groupieVersion = '2.8.1'
     markwonVersion = '4.6.2'
 
     leakCanaryVersion = '2.5'
@@ -119,37 +121,8 @@ ext {
 }
 
 configurations {
-    checkstyle
     ktlint
 }
-
-checkstyle {
-    getConfigDirectory().set(rootProject.file("checkstyle"))
-    ignoreFailures false
-    showViolations true
-    toolVersion = checkstyleVersion
-}
-
-task runCheckstyle(type: Checkstyle) {
-    source 'src'
-    include '**/*.java'
-    exclude '**/gen/**'
-    exclude '**/R.java'
-    exclude '**/BuildConfig.java'
-    exclude 'main/java/us/shandian/giga/**'
-
-    classpath = configurations.checkstyle
-
-    showViolations true
-
-    reports {
-        xml.getRequired().set(true)
-        html.getRequired().set(true)
-    }
-}
-
-def outputDir = "${project.buildDir}/reports/ktlint/"
-def inputFiles = project.fileTree(dir: "src", include: "**/*.kt")
 
 task runKtlint(type: JavaExec) {
     inputs.files(inputFiles)
@@ -193,12 +166,10 @@ dependencies {
     // This works thanks to JitPack: https://jitpack.io/
     implementation 'com.github.TeamNewPipe:nanojson:1d9e1aea9049fc9f85e68b43ba39fe7be1c1f751'
     implementation 'com.github.ShareASmile:NewPipeExtractor:9f741d54b2'
-    //implementation 'com.github.TeamNewPipe:NewPipeExtractor:eb07d70a2ce03bee3cc74fc33b2e4173e1c21436'
 
 
-/** Checkstyle **/
-    checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
-    ktlint 'com.pinterest:ktlint:0.45.2'
+/** Ktlint **/
+    ktlint 'com.pinterest:ktlint:0.43.2'
 
 /** Kotlin **/
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
