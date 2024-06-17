@@ -30,6 +30,10 @@ import org.schabi.newpipelegacy.util.NavigationHelper;
 import org.schabi.newpipelegacy.util.external_communication.ShareUtils;
 import org.schabi.newpipelegacy.util.external_communication.TextLinkifier;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import icepick.State;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
@@ -201,7 +205,9 @@ public class DescriptionFragment extends BaseFragment {
     }
 
     private void addTagsMetadataItem(final LayoutInflater inflater, final LinearLayout layout) {
-        if (streamInfo.getTags() != null && !streamInfo.getTags().isEmpty()) {
+            final List<String> tags = new ArrayList<>(streamInfo.getTags());
+            Collections.sort(tags);
+            for (final String tag : tags) {
             final ItemMetadataTagsBinding itemBinding =
                     ItemMetadataTagsBinding.inflate(inflater, layout, false);
 
@@ -212,7 +218,7 @@ public class DescriptionFragment extends BaseFragment {
                 chip.setOnClickListener(this::onTagClick);
                 chip.setOnLongClickListener(this::onTagLongClick);
                 itemBinding.metadataTagsChips.addView(chip);
-            });
+            }
 
             layout.addView(itemBinding.getRoot());
         }

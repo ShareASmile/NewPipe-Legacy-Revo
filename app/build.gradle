@@ -89,11 +89,6 @@ android {
         jvmTarget = JavaVersion.VERSION_11
     }
 
-    // Required and used only by groupie
-    androidExtensions {
-        experimental = true
-    }
-
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
