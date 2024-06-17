@@ -205,13 +205,13 @@ public class DescriptionFragment extends BaseFragment {
     }
 
     private void addTagsMetadataItem(final LayoutInflater inflater, final LinearLayout layout) {
-            final List<String> tags = new ArrayList<>(streamInfo.getTags());
-            Collections.sort(tags);
-            for (final String tag : tags) {
+        if (streamInfo.getTags() != null && !streamInfo.getTags().isEmpty()) {
             final ItemMetadataTagsBinding itemBinding =
                     ItemMetadataTagsBinding.inflate(inflater, layout, false);
 
-            streamInfo.getTags().stream().sorted().forEach(tag -> {
+            final List<String> tags = streamInfo.getTags().stream().sorted()
+                    .collect(Collectors.toList());
+            for (final String tag : tags) {
                 final Chip chip = (Chip) inflater.inflate(R.layout.chip,
                         itemBinding.metadataTagsChips, false);
                 chip.setText(tag);
