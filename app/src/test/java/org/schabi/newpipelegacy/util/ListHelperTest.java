@@ -6,6 +6,7 @@ import org.schabi.newpipe.extractor.stream.AudioStream;
 import org.schabi.newpipe.extractor.stream.VideoStream;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +18,7 @@ import androidx.annotation.Nullable;
 
 public class ListHelperTest {
     private static final String BEST_RESOLUTION_KEY = "best_resolution";
-    private static final List<AudioStream> AUDIO_STREAMS_TEST_LIST = List.of(
+    private static final List<AudioStream> AUDIO_STREAMS_TEST_LIST = Arrays.asList(
             generateAudioStream("m4a-128-1", MediaFormat.M4A, 128),
             generateAudioStream("webma-192", MediaFormat.WEBMA, 192),
             generateAudioStream("mp3-64", MediaFormat.MP3, 64),
@@ -29,7 +30,7 @@ public class ListHelperTest {
             generateAudioStream("mp3-192", MediaFormat.MP3, 192),
             generateAudioStream("webma-320", MediaFormat.WEBMA, 320));
 
-    private static final List<VideoStream> VIDEO_STREAMS_TEST_LIST = List.of(
+    private static final List<VideoStream> VIDEO_STREAMS_TEST_LIST = Arrays.asList(
             generateVideoStream("mpeg_4-720", MediaFormat.MPEG_4, "720p", false),
             generateVideoStream("v3gpp-240", MediaFormat.v3GPP, "240p", false),
             generateVideoStream("webm-480", MediaFormat.WEBM, "480p", false),
@@ -37,7 +38,7 @@ public class ListHelperTest {
             generateVideoStream("mpeg_4-360", MediaFormat.MPEG_4, "360p", false),
             generateVideoStream("webm-360", MediaFormat.WEBM, "360p", false));
 
-    private static final List<VideoStream> VIDEO_ONLY_STREAMS_TEST_LIST = List.of(
+    private static final List<VideoStream> VIDEO_ONLY_STREAMS_TEST_LIST = Arrays.asList(
             generateVideoStream("mpeg_4-720-1", MediaFormat.MPEG_4, "720p", true),
             generateVideoStream("mpeg_4-720-2", MediaFormat.MPEG_4, "720p", true),
             generateVideoStream("mpeg_4-2160", MediaFormat.MPEG_4, "2160p", true),
@@ -53,7 +54,7 @@ public class ListHelperTest {
         List<VideoStream> result = ListHelper.getSortedStreamVideosList(MediaFormat.MPEG_4, true,
                 VIDEO_STREAMS_TEST_LIST, VIDEO_ONLY_STREAMS_TEST_LIST, true, false);
 
-        List<String> expected = List.of("144p", "240p", "360p", "480p", "720p", "720p60",
+        List<String> expected = Arrays.asList("144p", "240p", "360p", "480p", "720p", "720p60",
                 "1080p", "1080p60", "1440p60", "2160p", "2160p60");
 
         assertEquals(expected.size(), result.size());
@@ -68,7 +69,7 @@ public class ListHelperTest {
 
         result = ListHelper.getSortedStreamVideosList(MediaFormat.MPEG_4, true,
                 VIDEO_STREAMS_TEST_LIST, VIDEO_ONLY_STREAMS_TEST_LIST, false, false);
-        expected = List.of("2160p60", "2160p", "1440p60", "1080p60", "1080p", "720p60",
+        expected = Arrays.asList("2160p60", "2160p", "1440p60", "1080p60", "1080p", "720p60",
                 "720p", "480p", "360p", "240p", "144p");
         assertEquals(expected.size(), result.size());
         for (int i = 0; i < result.size(); i++) {
@@ -82,7 +83,7 @@ public class ListHelperTest {
                 null, VIDEO_ONLY_STREAMS_TEST_LIST, true, true);
 
         List<String> expected =
-                List.of("720p", "720p60", "1080p", "1080p60", "1440p60", "2160p", "2160p60");
+                Arrays.asList("720p", "720p60", "1080p", "1080p60", "1440p60", "2160p", "2160p60");
 
         assertEquals(expected.size(), result.size());
         for (int i = 0; i < result.size(); i++) {
@@ -96,7 +97,7 @@ public class ListHelperTest {
 
         result = ListHelper.getSortedStreamVideosList(MediaFormat.MPEG_4, true,
                 VIDEO_STREAMS_TEST_LIST, null, false, true);
-        expected = List.of("720p", "480p", "360p", "240p", "144p");
+        expected = Arrays.asList("720p", "480p", "360p", "240p", "144p");
         assertEquals(expected.size(), result.size());
         for (int i = 0; i < result.size(); i++) {
             assertEquals(expected.get(i), result.get(i).getResolution());
@@ -109,10 +110,10 @@ public class ListHelperTest {
 
         result = ListHelper.getSortedStreamVideosList(MediaFormat.MPEG_4, true,
                 VIDEO_STREAMS_TEST_LIST, VIDEO_ONLY_STREAMS_TEST_LIST, true, true);
-        expected = List.of("144p", "240p", "360p", "480p", "720p", "720p60",
+        expected = Arrays.asList("144p", "240p", "360p", "480p", "720p", "720p60",
                 "1080p", "1080p60", "1440p60", "2160p", "2160p60");
         final List<String> expectedVideoOnly =
-                List.of("720p", "720p60", "1080p", "1080p60", "1440p60", "2160p", "2160p60");
+                Arrays.asList("720p", "720p60", "1080p", "1080p60", "1440p60", "2160p", "2160p60");
 
         assertEquals(expected.size(), result.size());
         for (int i = 0; i < result.size(); i++) {
@@ -130,7 +131,7 @@ public class ListHelperTest {
 
         final List<VideoStream> result = ListHelper.getSortedStreamVideosList(MediaFormat.MPEG_4,
                 false, VIDEO_STREAMS_TEST_LIST, VIDEO_ONLY_STREAMS_TEST_LIST, false, false);
-        final List<String> expected = List.of(
+        final List<String> expected = Arrays.asList(
                 "1080p60", "1080p", "720p60", "720p", "480p", "360p", "240p", "144p");
         assertEquals(expected.size(), result.size());
         for (int i = 0; i < result.size(); i++) {
@@ -140,7 +141,7 @@ public class ListHelperTest {
 
     @Test
     public void getDefaultResolutionTest() {
-        final List<VideoStream> testList = new ArrayList<>(List.of(
+        final List<VideoStream> testList = new ArrayList<>(Arrays.asList(
                 generateVideoStream("mpeg_4-720", MediaFormat.MPEG_4, "720p", false),
                 generateVideoStream("v3gpp-240", MediaFormat.v3GPP, "240p", false),
                 generateVideoStream("webm-480",  MediaFormat.WEBM, "480p", false),
@@ -222,7 +223,7 @@ public class ListHelperTest {
         // Doesn't contain the preferred format //
         ////////////////////////////////////////
 
-        List<AudioStream> testList = List.of(
+        List<AudioStream> testList = Arrays.asList(
                 generateAudioStream("m4a-128", MediaFormat.M4A, 128),
                 generateAudioStream("webma-192", MediaFormat.WEBMA, 192));
         // List doesn't contains this format
@@ -236,7 +237,7 @@ public class ListHelperTest {
         // Multiple not-preferred-formats and equal bitrates //
         //////////////////////////////////////////////////////
 
-        testList = new ArrayList<>(List.of(
+        testList = new ArrayList<>(Arrays.asList(
                 generateAudioStream("webma-192-1", MediaFormat.WEBMA, 192),
                 generateAudioStream("m4a-192-1", MediaFormat.M4A, 192),
                 generateAudioStream("webma-192-2", MediaFormat.WEBMA, 192),
@@ -289,7 +290,7 @@ public class ListHelperTest {
         // Doesn't contain the preferred format //
         ////////////////////////////////////////
 
-        List<AudioStream> testList = new ArrayList<>(List.of(
+        List<AudioStream> testList = new ArrayList<>(Arrays.asList(
                 generateAudioStream("m4a-128", MediaFormat.M4A, 128),
                 generateAudioStream("webma-192-1", MediaFormat.WEBMA, 192)));
         // List doesn't contains this format
@@ -309,7 +310,7 @@ public class ListHelperTest {
         // Multiple not-preferred-formats and equal bitrates //
         //////////////////////////////////////////////////////
 
-        testList = new ArrayList<>(List.of(
+        testList = new ArrayList<>(Arrays.asList(
                 generateAudioStream("webma-192-1", MediaFormat.WEBMA, 192),
                 generateAudioStream("m4a-192-1",   MediaFormat.M4A, 192),
                 generateAudioStream("webma-256", MediaFormat.WEBMA, 256),
@@ -336,7 +337,7 @@ public class ListHelperTest {
 
     @Test
     public void getVideoDefaultStreamIndexCombinations() {
-        final List<VideoStream> testList = List.of(
+        final List<VideoStream> testList = Arrays.asList(
                 generateVideoStream("mpeg_4-1080", MediaFormat.MPEG_4, "1080p",  false),
                 generateVideoStream("mpeg_4-720_60", MediaFormat.MPEG_4, "720p60", false),
                 generateVideoStream("mpeg_4-720", MediaFormat.MPEG_4, "720p",   false),

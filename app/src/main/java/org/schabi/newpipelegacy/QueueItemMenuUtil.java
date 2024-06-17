@@ -16,7 +16,7 @@ import org.schabi.newpipelegacy.player.playqueue.PlayQueueItem;
 import org.schabi.newpipelegacy.util.NavigationHelper;
 import org.schabi.newpipelegacy.util.SparseItemUtil;
 
-import java.util.List;
+import java.util.Collections;
 
 public final class QueueItemMenuUtil {
     private QueueItemMenuUtil() {
@@ -53,7 +53,7 @@ public final class QueueItemMenuUtil {
                 case R.id.menu_item_append_playlist:
                     PlaylistDialog.createCorrespondingDialog(
                             context,
-                            List.of(new StreamEntity(item)),
+                            Collections.singletonList(new StreamEntity(item)),
                             dialog -> dialog.show(
                                     fragmentManager,
                                     "QueueItemMenuUtil@append_playlist"

@@ -2,6 +2,7 @@ package org.schabi.newpipelegacy.util;
 
 import android.text.TextUtils;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +20,6 @@ public final class CookieUtils {
     }
 
     public static Set<String> splitCookies(final String cookies) {
-        return Set.of(cookies.split("; *"));
+        return new HashSet<>(Arrays.asList(cookies.split("; *")));
     }
 }

@@ -10,6 +10,8 @@ import com.grack.nanojson.JsonStringWriter;
 import com.grack.nanojson.JsonWriter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,10 +20,11 @@ import java.util.List;
 public final class TabsJsonHelper {
     private static final String JSON_TABS_ARRAY_KEY = "tabs";
 
-    private static final List<Tab> FALLBACK_INITIAL_TABS_LIST = List.of(
-            Tab.Type.DEFAULT_KIOSK.getTab(),
-            Tab.Type.SUBSCRIPTIONS.getTab(),
-            Tab.Type.BOOKMARKS.getTab());
+    private static final List<Tab> FALLBACK_INITIAL_TABS_LIST = Collections.unmodifiableList(
+            Arrays.asList(
+                    Tab.Type.DEFAULT_KIOSK.getTab(),
+                    Tab.Type.SUBSCRIPTIONS.getTab(),
+                    Tab.Type.BOOKMARKS.getTab()));
 
     private TabsJsonHelper() { }
 

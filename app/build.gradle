@@ -119,6 +119,9 @@ configurations {
     ktlint
 }
 
+def outputDir = "${project.buildDir}/reports/ktlint/"
+def inputFiles = project.fileTree(dir: "src", include: "**/*.kt")
+
 task runKtlint(type: JavaExec) {
     inputs.files(inputFiles)
     outputs.dir(outputDir)

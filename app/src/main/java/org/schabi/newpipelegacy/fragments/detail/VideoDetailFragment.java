@@ -114,6 +114,7 @@ import org.schabi.newpipelegacy.util.external_communication.KoreUtils;
 import org.schabi.newpipelegacy.util.external_communication.ShareUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -455,7 +456,7 @@ public final class VideoDetailFragment
                     disposables.add(
                             PlaylistDialog.createCorrespondingDialog(
                                     getContext(),
-                                    List.of(new StreamEntity(currentInfo)),
+                                    Collections.singletonList(new StreamEntity(currentInfo)),
                                     dialog -> dialog.show(getFM(), TAG)
                             )
                     );

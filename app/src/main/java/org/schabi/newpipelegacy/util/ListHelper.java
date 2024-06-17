@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -31,16 +32,17 @@ import java.util.stream.Collectors;
 public final class ListHelper {
     // Video format in order of quality. 0=lowest quality, n=highest quality
     private static final List<MediaFormat> VIDEO_FORMAT_QUALITY_RANKING =
-            List.of(MediaFormat.v3GPP, MediaFormat.WEBM, MediaFormat.MPEG_4);
+            Arrays.asList(MediaFormat.v3GPP, MediaFormat.WEBM, MediaFormat.MPEG_4);
 
     // Audio format in order of quality. 0=lowest quality, n=highest quality
     private static final List<MediaFormat> AUDIO_FORMAT_QUALITY_RANKING =
-            List.of(MediaFormat.MP3, MediaFormat.WEBMA, MediaFormat.M4A);
+            Arrays.asList(MediaFormat.MP3, MediaFormat.WEBMA, MediaFormat.M4A);
     // Audio format in order of efficiency. 0=most efficient, n=least efficient
     private static final List<MediaFormat> AUDIO_FORMAT_EFFICIENCY_RANKING =
-            List.of(MediaFormat.WEBMA, MediaFormat.M4A, MediaFormat.MP3);
-    // Use a Set for better performance
-    private static final Set<String> HIGH_RESOLUTION_LIST = Set.of("1440p", "2160p");
+            Arrays.asList(MediaFormat.WEBMA, MediaFormat.M4A, MediaFormat.MP3);
+    // Use a HashSet for better performance
+    private static final Set<String> HIGH_RESOLUTION_LIST = new HashSet<>(
+            Arrays.asList("1440p", "2160p"));
 
     private ListHelper() { }
 

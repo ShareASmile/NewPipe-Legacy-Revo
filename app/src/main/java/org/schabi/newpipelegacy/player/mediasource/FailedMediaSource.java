@@ -16,6 +16,7 @@ import org.schabi.newpipelegacy.player.mediaitem.ExceptionTag;
 import org.schabi.newpipelegacy.player.playqueue.PlayQueueItem;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -56,7 +57,9 @@ public class FailedMediaSource extends BaseMediaSource implements ManagedMediaSo
         this.playQueueItem = playQueueItem;
         this.error = error;
         this.retryTimestamp = retryTimestamp;
-        this.mediaItem = ExceptionTag.of(playQueueItem, List.of(error)).withExtras(this)
+        this.mediaItem = ExceptionTag
+                .of(playQueueItem, Collections.singletonList(error))
+                .withExtras(this)
                 .asMediaItem();
     }
 

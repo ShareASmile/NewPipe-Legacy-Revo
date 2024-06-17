@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.schabi.newpipelegacy.R;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CustomBottomSheetBehavior extends BottomSheetBehavior<FrameLayout> {
@@ -24,7 +25,7 @@ public class CustomBottomSheetBehavior extends BottomSheetBehavior<FrameLayout> 
 
     Rect globalRect = new Rect();
     private boolean skippingInterception = false;
-    private final List<Integer> skipInterceptionOfElements = List.of(
+    private final List<Integer> skipInterceptionOfElements = Arrays.asList(
             R.id.detail_content_root_layout, R.id.relatedItemsLayout,
             R.id.itemsListPanel, R.id.view_pager, R.id.tab_layout, R.id.bottomControls,
             R.id.playPauseButton, R.id.playPreviousButton, R.id.playNextButton);
@@ -56,7 +57,7 @@ public class CustomBottomSheetBehavior extends BottomSheetBehavior<FrameLayout> 
         if (getState() == BottomSheetBehavior.STATE_EXPANDED
                 && event.getAction() == MotionEvent.ACTION_DOWN) {
             // Without overriding scrolling will not work when user touches these elements
-            for (final int element : skipInterceptionOfElements) {
+            for (final Integer element : skipInterceptionOfElements) {
                 final View view = child.findViewById(element);
                 if (view != null) {
                     final boolean visible = view.getGlobalVisibleRect(globalRect);

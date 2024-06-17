@@ -83,6 +83,7 @@ import org.schabi.newpipelegacy.views.FocusOverlayView;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import icepick.Icepick;
@@ -650,7 +651,7 @@ public class RouterActivity extends AppCompatActivity {
                 .subscribe(
                         info -> PlaylistDialog.createCorrespondingDialog(
                                 getThemeWrapperContext(),
-                                List.of(new StreamEntity(info)),
+                                Collections.singletonList(new StreamEntity(info)),
                                 playlistDialog -> {
                                     playlistDialog.setOnDismissListener(dialog -> finish());
 
