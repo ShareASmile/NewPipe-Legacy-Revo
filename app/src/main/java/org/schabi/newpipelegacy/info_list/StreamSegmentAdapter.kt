@@ -1,7 +1,8 @@
 package org.schabi.newpipelegacy.info_list
 
 import android.util.Log
-import com.xwray.groupie.GroupieAdapter
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import org.schabi.newpipe.extractor.stream.StreamInfo
 import kotlin.math.max
 
@@ -10,7 +11,7 @@ import kotlin.math.max
  */
 class StreamSegmentAdapter(
     private val listener: StreamSegmentListener
-) : GroupieAdapter() {
+) : GroupAdapter<GroupieViewHolder>() {
 
     var currentIndex: Int = 0
         private set

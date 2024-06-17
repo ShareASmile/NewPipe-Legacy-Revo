@@ -21,7 +21,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.xwray.groupie.GroupieAdapter
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.OnItemClickListener
 import com.xwray.groupie.Section
 import icepick.Icepick
@@ -77,7 +78,7 @@ class FeedGroupDialog : DialogFragment(), BackPressable {
 
     private val subscriptionMainSection = Section()
     private val subscriptionEmptyFooter = Section()
-    private lateinit var subscriptionGroupAdapter: GroupieAdapter
+    private lateinit var subscriptionGroupAdapter: GroupAdapter<GroupieViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -152,7 +153,7 @@ class FeedGroupDialog : DialogFragment(), BackPressable {
             }
         }
 
-        subscriptionGroupAdapter = GroupieAdapter().apply {
+        subscriptionGroupAdapter = GroupAdapter<GroupieViewHolder>().apply {
             add(subscriptionMainSection)
             add(subscriptionEmptyFooter)
             spanCount = 4
@@ -378,7 +379,7 @@ class FeedGroupDialog : DialogFragment(), BackPressable {
     }
 
     private fun setupIconPicker() {
-        val groupAdapter = GroupieAdapter()
+        val groupAdapter = GroupAdapter<GroupieViewHolder>()
         groupAdapter.addAll(FeedGroupIcon.values().map { PickerIconItem(it) })
 
         feedGroupCreateBinding.iconSelector.apply {

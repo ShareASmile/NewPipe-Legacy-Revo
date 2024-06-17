@@ -46,7 +46,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.xwray.groupie.GroupieAdapter
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import com.xwray.groupie.OnItemClickListener
 import com.xwray.groupie.OnItemLongClickListener
@@ -94,7 +95,7 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     private var groupName = ""
     private var oldestSubscriptionUpdate: OffsetDateTime? = null
 
-    private lateinit var groupAdapter: GroupieAdapter
+    private lateinit var groupAdapter: GroupAdapter<GroupieViewHolder>
     @State @JvmField var showPlayedItems: Boolean = true
     @State @JvmField var showFutureItems: Boolean = true
 
@@ -139,7 +140,7 @@ class FeedFragment : BaseStateFragment<FeedState>() {
         showFutureItems = viewModel.getShowFutureItemsFromPreferences()
         viewModel.stateLiveData.observe(viewLifecycleOwner) { it?.let(::handleResult) }
 
-        groupAdapter = GroupieAdapter().apply {
+        groupAdapter = GroupAdapter<GroupieViewHolder>().apply {
             setOnItemClickListener(listenerStreamItem)
             setOnItemLongClickListener(listenerStreamItem)
         }
