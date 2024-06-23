@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -17,7 +16,6 @@ import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import org.schabi.newpipelegacy.App;
@@ -26,7 +24,6 @@ import org.schabi.newpipelegacy.R;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import okhttp3.OkHttpClient;
 
@@ -120,6 +117,10 @@ public final class PicassoHelper {
         return loadImageDefault(url, R.drawable.placeholder_thumbnail_playlist);
     }
 
+    public static RequestCreator loadNotificationIcon(final String url) {
+        return loadImageDefault(url, R.drawable.ic_newpipe_triangle_white);
+    }
+
     public static RequestCreator loadSeekbarThumbnailPreview(final String url) {
         return picassoInstance.load(url);
     }
@@ -175,27 +176,6 @@ public final class PicassoHelper {
     public static Bitmap getImageFromCacheIfPresent(final String imageUrl) {
         // URLs in the internal cache finish with \n so we need to add \n to image URLs
         return picassoCache.get(imageUrl + "\n");
-    }
-
-    public static void loadNotificationIcon(final String url,
-                                            final Consumer<Bitmap> bitmapConsumer) {
-        loadImageDefault(url, R.drawable.ic_newpipe_triangle_white)
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(final Bitmap bitmap, final Picasso.LoadedFrom from) {
-                        bitmapConsumer.accept(bitmap);
-                    }
-
-                    @Override
-                    public void onBitmapFailed(final Exception e, final Drawable errorDrawable) {
-                        bitmapConsumer.accept(null);
-                    }
-
-                    @Override
-                    public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                        // Nothing to do
-                    }
-                });
     }
 
 
