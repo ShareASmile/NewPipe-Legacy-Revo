@@ -188,14 +188,14 @@ public final class PicassoHelper {
         if (!shouldLoadImages || isBlank(url)) {
             return picassoInstance
                     .load((String) null)
-                    .placeholder(placeholder) // show placeholder when no image should load
-                    .error(placeholder);
+                    .placeholder(placeholderResId) // show placeholder when no image should load
+                    .error(placeholderResId);
         } else {
             final RequestCreator requestCreator = picassoInstance
                     .load(url)
-                    .error(placeholder);
+                    .error(placeholderResId);
             if (showPlaceholderWhileLoading) {
-                requestCreator.placeholder(placeholder);
+                requestCreator.placeholder(placeholderResId);
             }
             return requestCreator;
         }
