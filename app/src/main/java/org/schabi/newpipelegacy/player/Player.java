@@ -768,17 +768,15 @@ public final class Player implements PlaybackListener, Listener {
                             + from + "]");
                 }
 
-                currentThumbnail = bitmap;
                  // there is a new thumbnail, so e.g. the end screen thumbnail needs to change, too.
-                UIs.call(playerUi -> playerUi.onThumbnailLoaded(bitmap));
+                onThumbnailLoaded(bitmap);
             }
 
             @Override
             public void onBitmapFailed(final Exception e, final Drawable errorDrawable) {
                 Log.e(TAG, "Thumbnail - onBitmapFailed() called", e);
-                currentThumbnail = null;
                 // there is a new thumbnail, so e.g. the end screen thumbnail needs to change, too.
-                UIs.call(playerUi -> playerUi.onThumbnailLoaded(null));
+                onThumbnailLoaded(null);
             }
 
             @Override
@@ -801,7 +799,7 @@ public final class Player implements PlaybackListener, Listener {
 
         // Unset currentThumbnail, since it is now outdated. This ensures it is not used in media
         // session metadata while the new thumbnail is being loaded by Picasso.
-        currentThumbnail = null;
+        onThumbnailLoaded(null);
         if (isNullOrEmpty(url)) {
             return;
         }
@@ -815,6 +813,16 @@ public final class Player implements PlaybackListener, Listener {
     private void cancelLoadingCurrentThumbnail() {
         // cancel the Picasso job associated with the player thumbnail, if any
         PicassoHelper.cancelTag(PICASSO_PLAYER_THUMBNAIL_TAG);
+    }
+
+    private void onThumbnailLoaded(@Nullable final Bitmap bitmap) {
+        // Avoid useless thumbnail updates, if the thumbnail has not actually changed. Based on the
+        // thumbnail loading code, this if would be skipped only when both bitmaps are `null`, since
+        // onThumbnailLoaded won't be called twice with the same nonnull bitmap by Picasso's target.
+        if (currentThumbnail != bitmap) {
+            currentThumbnail = bitmap;
+            UIs.call(playerUi -> playerUi.onThumbnailLoaded(bitmap));
+        }
     }
     //endregion
 
@@ -1503,49 +1511,41 @@ public final class Player implements PlaybackListener, Listener {
         if (DEBUG) {
             Log.d(TAG, "Playback - onPlaybackSynchronize(was blocked: " + wasBlocked
                     + ") called with item=[" + item.getTitle() + "], url=[" + item.getUrl() + "]");
-        }
-        if (exoPlayerIsNull() || playQueue == null) {
-            return;
+        if (exoPlayerIsNull() || playQueue == null || currentItem == item) {
+            return; // nothing to synchronize
         }
 
-        final boolean hasPlayQueueItemChanged = currentItem != item;
+        final int playQueueIndex = playQueue.indexOf(item);
+        final int playlistIndex = simpleExoPlayer.getCurrentMediaItemIndex();
+        final int playlistSize = simpleExoPlayer.getCurrentTimeline().getWindowCount();
+        final boolean removeThumbnailBeforeSync = currentItem == null
+                || currentItem.getServiceId() != item.getServiceId()
+                || !currentItem.getUrl().equals(item.getUrl());
 
-        final int currentPlayQueueIndex = playQueue.indexOf(item);
-        final int currentPlaylistIndex = simpleExoPlayer.getCurrentMediaItemIndex();
-        final int currentPlaylistSize = simpleExoPlayer.getCurrentTimeline().getWindowCount();
-
-        // If nothing to synchronize
-        if (!hasPlayQueueItemChanged) {
-            return;
-        }
         currentItem = item;
 
-        // Check if on wrong window
-        if (currentPlayQueueIndex != playQueue.getIndex()) {
-            Log.e(TAG, "Playback - Play Queue may be desynchronized: item "
-                    + "index=[" + currentPlayQueueIndex + "], "
-                    + "queue index=[" + playQueue.getIndex() + "]");
-
-            // Check if bad seek position
-        } else if ((currentPlaylistSize > 0 && currentPlayQueueIndex >= currentPlaylistSize)
-                || currentPlayQueueIndex < 0) {
-            Log.e(TAG, "Playback - Trying to seek to invalid "
-                    + "index=[" + currentPlayQueueIndex + "] with "
-                    + "playlist length=[" + currentPlaylistSize + "]");
-
-        } else if (wasBlocked || currentPlaylistIndex != currentPlayQueueIndex || !isPlaying()) {
+        final int playQueueIndex = playQueue.indexOf(item);
+        final int playlistIndex = simpleExoPlayer.getCurrentMediaItemIndex();
+        final int playlistSize = simpleExoPlayer.getCurrentTimeline().getWindowCount();
+        final boolean removeThumbnailBeforeSync = currentItem == null
+                || currentItem.getServiceId() != item.getServiceId()
+                || !currentItem.getUrl().equals(item.getUrl());
             if (DEBUG) {
-                Log.d(TAG, "Playback - Rewinding to correct "
-                        + "index=[" + currentPlayQueueIndex + "], "
-                        + "from=[" + currentPlaylistIndex + "], "
-                        + "size=[" + currentPlaylistSize + "].");
+                Log.d(TAG, "Playback - Rewinding to correct index=[" + playQueueIndex + "], "
+                        + "from=[" + playlistIndex + "], size=[" + playlistSize + "].");
             }
 
+            if (removeThumbnailBeforeSync) {
+                // unset the current (now outdated) thumbnail to ensure it is not used during sync
+                onThumbnailLoaded(null);
+            }
+
+            // sync the player index with the queue index, and seek to the correct position
             if (item.getRecoveryPosition() != PlayQueueItem.RECOVERY_UNSET) {
-                simpleExoPlayer.seekTo(currentPlayQueueIndex, item.getRecoveryPosition());
-                playQueue.unsetRecovery(currentPlayQueueIndex);
+                simpleExoPlayer.seekTo(playQueueIndex, item.getRecoveryPosition());
+                playQueue.unsetRecovery(playQueueIndex);
             } else {
-                simpleExoPlayer.seekToDefaultPosition(currentPlayQueueIndex);
+                simpleExoPlayer.seekToDefaultPosition(playQueueIndex);
             }
         }
     }
