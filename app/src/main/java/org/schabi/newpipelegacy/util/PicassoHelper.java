@@ -185,7 +185,6 @@ public final class PicassoHelper {
 
     private static RequestCreator loadImageDefault(final String url, final int placeholderResId,
                                                    final boolean showPlaceholderWhileLoading) {
-        final Drawable placeholder = AppCompatResources.getDrawable(App.getApp(), placeholderResId);
         if (!shouldLoadImages || isBlank(url)) {
             return picassoInstance
                     .load((String) null)
