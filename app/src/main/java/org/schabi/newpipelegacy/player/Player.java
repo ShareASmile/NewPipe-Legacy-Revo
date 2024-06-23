@@ -1511,6 +1511,7 @@ public final class Player implements PlaybackListener, Listener {
         if (DEBUG) {
             Log.d(TAG, "Playback - onPlaybackSynchronize(was blocked: " + wasBlocked
                     + ") called with item=[" + item.getTitle() + "], url=[" + item.getUrl() + "]");
+        }
         if (exoPlayerIsNull() || playQueue == null || currentItem == item) {
             return; // nothing to synchronize
         }
