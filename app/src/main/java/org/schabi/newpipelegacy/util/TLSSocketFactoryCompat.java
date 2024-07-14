@@ -21,6 +21,7 @@ import static org.schabi.newpipelegacy.MainActivity.DEBUG;
  */
 public class TLSSocketFactoryCompat extends SSLSocketFactory {
 
+    private static final String TAG = "TLSSocketFactoryCom";
 
     private static TLSSocketFactoryCompat instance = null;
 
@@ -32,11 +33,11 @@ public class TLSSocketFactoryCompat extends SSLSocketFactory {
         internalSSLSocketFactory = context.getSocketFactory();
     }
 
-
-    public TLSSocketFactoryCompat(final TrustManager[] tm)
-            throws KeyManagementException, NoSuchAlgorithmException {
+    public TLSSocketFactoryCompat(
+            final TrustManagerFactory trustManagerFactory)
+            throws NoSuchAlgorithmException, KeyManagementException  {
         final SSLContext context = SSLContext.getInstance("TLS");
-        context.init(null, tm, new java.security.SecureRandom());
+        context.init(null, trustManagerFactory.getTrustManagers(), null);
         internalSSLSocketFactory = context.getSocketFactory();
     }
 
