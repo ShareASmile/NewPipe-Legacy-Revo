@@ -7,6 +7,7 @@ on:
       - dev
       - develop
       - add-conscrypt
+      - add-missing-certificates
       - toss
       - main
       - master
@@ -20,6 +21,7 @@ on:
       - dev
       - develop
       - add-conscrypt
+      - add-missing-certificates
       - toss
       - main
       - master
