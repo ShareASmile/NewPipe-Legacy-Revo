@@ -49,7 +49,7 @@ public final class NotificationPlayerUi extends PlayerUi {
     @Override
     public void onBlocked() {
         super.onBlocked();
-        notificationUtil.createNotificationIfNeededAndUpdate(false);
+        notificationUtil.updateThumbnail();
     }
 
     @Override

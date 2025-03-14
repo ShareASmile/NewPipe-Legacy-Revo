@@ -28,6 +28,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.schabi.newpipelegacy.player.mediasession.MediaSessionPlayerUi;
 import org.schabi.newpipelegacy.util.ThemeHelper;
 
 
@@ -73,9 +74,8 @@ public final class PlayerService extends Service {
         }
 
         player.handleIntent(intent);
-        if (player.getMediaSessionManager() != null) {
-            player.getMediaSessionManager().handleMediaButtonIntent(intent);
-        }
+        player.UIs().get(MediaSessionPlayerUi.class)
+                .ifPresent(ui -> ui.handleMediaButtonIntent(intent));
 
         return START_NOT_STICKY;
     }

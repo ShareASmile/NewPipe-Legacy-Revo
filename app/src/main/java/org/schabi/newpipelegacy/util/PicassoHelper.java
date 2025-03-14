@@ -1,11 +1,12 @@
 package org.schabi.newpipelegacy.util;
 
+import static org.schabi.newpipelegacy.MainActivity.DEBUG;
 import static org.schabi.newpipe.extractor.utils.Utils.isBlank;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -15,7 +16,6 @@ import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import org.schabi.newpipelegacy.App;
@@ -24,12 +24,11 @@ import org.schabi.newpipelegacy.R;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import okhttp3.OkHttpClient;
 
 public final class PicassoHelper {
-    public static final String PLAYER_THUMBNAIL_TAG = "PICASSO_PLAYER_THUMBNAIL_TAG";
+    private static final String TAG = PicassoHelper.class.getSimpleName();
     private static final String PLAYER_THUMBNAIL_TRANSFORMATION_KEY =
             "PICASSO_PLAYER_THUMBNAIL_TRANSFORMATION_KEY";
 
@@ -118,6 +117,10 @@ public final class PicassoHelper {
         return loadImageDefault(url, R.drawable.placeholder_thumbnail_playlist);
     }
 
+    public static RequestCreator loadNotificationIcon(final String url) {
+        return loadImageDefault(url, R.drawable.ic_newpipe_triangle_white);
+    }
+
     public static RequestCreator loadSeekbarThumbnailPreview(final String url) {
         return picassoInstance.load(url);
     }
@@ -126,10 +129,13 @@ public final class PicassoHelper {
     public static RequestCreator loadScaledDownThumbnail(final Context context, final String url) {
         // scale down the notification thumbnail for performance
         return PicassoHelper.loadThumbnail(url)
-                .tag(PLAYER_THUMBNAIL_TAG)
                 .transform(new Transformation() {
                     @Override
                     public Bitmap transform(final Bitmap source) {
+                        if (DEBUG) {
+                            Log.d(TAG, "Thumbnail - transform() called");
+                        }
+
                         final float notificationThumbnailWidth = Math.min(
                                 context.getResources()
                                         .getDimension(R.dimen.player_notification_thumbnail_width),
@@ -172,27 +178,6 @@ public final class PicassoHelper {
         return picassoCache.get(imageUrl + "\n");
     }
 
-    public static void loadNotificationIcon(final String url,
-                                            final Consumer<Bitmap> bitmapConsumer) {
-        loadImageDefault(url, R.drawable.ic_newpipe_triangle_white)
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(final Bitmap bitmap, final Picasso.LoadedFrom from) {
-                        bitmapConsumer.accept(bitmap);
-                    }
-
-                    @Override
-                    public void onBitmapFailed(final Exception e, final Drawable errorDrawable) {
-                        bitmapConsumer.accept(null);
-                    }
-
-                    @Override
-                    public void onPrepareLoad(final Drawable placeHolderDrawable) {
-                        // Nothing to do
-                    }
-                });
-    }
-
 
     private static RequestCreator loadImageDefault(final String url, final int placeholderResId) {
         return loadImageDefault(url, placeholderResId, true);
@@ -200,18 +185,17 @@ public final class PicassoHelper {
 
     private static RequestCreator loadImageDefault(final String url, final int placeholderResId,
                                                    final boolean showPlaceholderWhileLoading) {
-        final Drawable placeholder = AppCompatResources.getDrawable(App.getApp(), placeholderResId);
         if (!shouldLoadImages || isBlank(url)) {
             return picassoInstance
                     .load((String) null)
-                    .placeholder(placeholder) // show placeholder when no image should load
-                    .error(placeholder);
+                    .placeholder(placeholderResId) // show placeholder when no image should load
+                    .error(placeholderResId);
         } else {
             final RequestCreator requestCreator = picassoInstance
                     .load(url)
-                    .error(placeholder);
+                    .error(placeholderResId);
             if (showPlaceholderWhileLoading) {
-                requestCreator.placeholder(placeholder);
+                requestCreator.placeholder(placeholderResId);
             }
             return requestCreator;
         }
